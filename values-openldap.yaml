@@ -42,12 +42,12 @@ podAnnotations: {}
 service:
   annotations: {}
 
-  ldapPort: 389
-  sslLdapPort: 636
+  #ldapPort: 389
+  #sslLdapPort: 636
 
   ## If service type NodePort, define the value here
-  #ldapPortNodePort:
-  #sslLdapPortNodePort:
+  ldapPortNodePort: 30389
+  sslLdapPortNodePort: 30636
   ## List of IP addresses at which the service is available
   ## Ref: https://kubernetes.io/docs/user-guide/services/#external-ips
   ##
@@ -55,7 +55,8 @@ service:
 
   #loadBalancerIP: 
   #loadBalancerSourceRanges: []
-  type: ClusterIP
+  #type: ClusterIP
+  type: NodePort
 
 # Default configuration for openldap as environment variables. These get injected directly in the container.
 # Use the env variables from https://github.com/osixia/docker-openldap#beginner-guide
@@ -165,6 +166,10 @@ phpldapadmin:
     - phpldapadmin.integracam
   env:
     PHPLDAPADMIN_LDAP_HOSTS: openldap
+  service:
+    type: NodePort
+    ## name: phpldapadmin
+    port: 30080
  # TODO make it works
  #     "#PYTHON2BASH:
  #       [{'openldap.openldap': 
